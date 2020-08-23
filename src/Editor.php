@@ -73,22 +73,22 @@ final class Editor
         }
 
         if (is_numeric($value)) {
-            return $value;
+            return (string) $value;
         }
 
         // boolean
 
-        $str = Str::make(is_bool($value) ? (string) $value : $value);
-
-        if ($str->equals('true') || $value === true) {
+        if ($value === true) {
             return 'true';
         }
 
-        if ($str->equals('false') || $value === false) {
+        if ($value === false) {
             return 'false';
         }
 
         //
+
+        $str = Str::make($value);
 
         if (($toString = (string) $value) === $value) {
             if (($str->firstSymbol() === '\'' && $str->lastSymbol() === '\'') ||
