@@ -33,7 +33,7 @@ final class Editor
 
         $matches = [];
 
-        preg_match_all('/(.*)=(.*)\n/i', file_get_contents($path), $matches);
+        preg_match_all('/([^=]*)=(.*)\n*/i', file_get_contents($path), $matches);
 
         if (count($matches) !== 3) {
             throw new EnvNotValid($path);
