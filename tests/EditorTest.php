@@ -54,6 +54,8 @@ final class EditorTest extends TestCase
         $env = $this->loadExample();
 
         $env->set('APP_NAME', 'Test');
+        $env->set('TEST_BOOLEAN_FALSE', false);
+        $env->set('TEST_BOOLEAN_TRUE', true);
 
         Editor::save($env, static::$saveEnvPath);
 
@@ -62,6 +64,10 @@ final class EditorTest extends TestCase
         $env = $this->loadSavedExample();
 
         self::assertEquals('Test', $env->get('APP_NAME'));
+        self::assertIsBool($env->get('TEST_BOOLEAN_FALSE'));
+        self::assertFalse($env->get('TEST_BOOLEAN_FALSE'));
+        self::assertIsBool($env->get('TEST_BOOLEAN_TRUE'));
+        self::assertTrue($env->get('TEST_BOOLEAN_TRUE'));
     }
 
     /**

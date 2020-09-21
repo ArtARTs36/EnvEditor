@@ -68,14 +68,6 @@ final class Editor
      */
     private static function prepareValueToSave($value): string
     {
-        if (empty($value)) {
-            return '\'\'';
-        }
-
-        if (is_numeric($value)) {
-            return (string) $value;
-        }
-
         // boolean
 
         if ($value === true) {
@@ -84,6 +76,16 @@ final class Editor
 
         if ($value === false) {
             return 'false';
+        }
+
+        //
+
+        if (empty($value)) {
+            return '\'\'';
+        }
+
+        if (is_numeric($value)) {
+            return (string) $value;
         }
 
         //
