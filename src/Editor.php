@@ -157,7 +157,10 @@ final class Editor
         return $value;
     }
 
-    public static function relevantSave(Env $env, string $path = null)
+    /**
+     * Save env variables by logical groups
+     */
+    public static function relevantSave(Env $env, string $path = null): bool
     {
         $keys = array_keys($env->getVariables());
 
