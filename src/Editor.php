@@ -4,6 +4,7 @@ namespace ArtARTs36\EnvEditor;
 
 use ArtARTs36\EnvEditor\Exceptions\EnvNotFound;
 use ArtARTs36\EnvEditor\Exceptions\EnvNotValid;
+use ArtARTs36\EnvEditor\Field\Field;
 use ArtARTs36\Str\Str;
 
 /**
@@ -59,7 +60,7 @@ final class Editor
             $file .= "{$key}={$value}\n";
         }
 
-        return (bool) file_put_contents($path ?? $env->getPath(), $file);
+        return self::saveFile($env, $file, $path);
     }
 
     /**
@@ -154,5 +155,71 @@ final class Editor
         }
 
         return $value;
+    }
+
+    public static function relevantSave(Env $env, string $path = null)
+    {
+        $keys = array_keys($env->getVariables());
+
+        $root = new Field('');
+        $field = $root;
+
+        foreach ($keys as $key) {
+            $parts = explode('_', $key);
+
+            foreach ($parts as $part) {
+                $field = $field->addChildren($part, next($parts) ? false : true);
+            }
+
+            $field = $root;
+        }
+
+        //
+
+        $fields = [];
+        static::getFieldsForRelevant($keys, $root, $fields);
+
+        $file = '';
+        foreach ($fields as $field) {
+            if ($field === "\n") {
+                $file .= "\n";
+
+                continue;
+            }
+
+            $file .= "{$field}={$env->get($field)}\n";
+        }
+
+        return self::saveFile($env, $file, $path);
+    }
+
+    private static function getFieldsForRelevant(array $keys, Field $root, array &$fields): void
+    {
+        $saveToken = function (Field $root) use (&$fields) {
+            $fields[] = $root->token;
+
+            if ($root->ancestor->isVisitedAllChildren()) {
+                $fields[] = "\n";
+            }
+        };
+
+        if ($root->isEndToken()) {
+            $saveToken($root);
+
+            return;
+        }
+
+        if (in_array($root->token, $keys)) {
+            $saveToken($root);
+        }
+
+        foreach ($root->sort()->getChildren() as $child) {
+            self::getFieldsForRelevant($keys, $child, $fields);
+        }
+    }
+
+    private static function saveFile(Env $env, string $content, ?string $path): bool
+    {
+        return (bool) file_put_contents($path ?? $env->getPath(), $content);
     }
 }

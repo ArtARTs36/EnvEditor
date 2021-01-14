@@ -71,6 +71,34 @@ final class EditorTest extends TestCase
     }
 
     /**
+     * @covers \ArtARTs36\EnvEditor\Editor::relevantSave
+     */
+    public function testRelevantSave(): void
+    {
+        $env = Editor::create(static::$saveEnvPath = __DIR__ . '/.env.relevant_test_save')
+            ->set('RABBIT_PASSWORD', 12345)
+            ->set('APP_HOST', 'localhost')
+            ->set('RABBIT_HOST', 'localhost')
+            ->set('RABBIT_AUTH_HOST_PORT', '123')
+            ->set('RABBIT_AUTH_HOST_POST', '123')
+            ->set('RABBIT_AUTH_HOST', '123')
+            ->set('APP_PORT', 8080)
+            ->set('RABBIT_HEARTBEAT', 120)
+            ->set('TEST_ONE', 1)
+            ->set('APP_ONE', 2)
+            ->set('TEST_TWO', 3)
+            ->set('KUKU_A1', 2)
+            ->set('KUKU_A2', 3);
+
+        Editor::relevantSave($env);
+
+        self::assertEquals(
+            file_get_contents(__DIR__ . '/.env.relevant_save'),
+            file_get_contents(static::$saveEnvPath)
+        );
+    }
+
+    /**
      * @return Env
      */
     private function loadExample(): Env
