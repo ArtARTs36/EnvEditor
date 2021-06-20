@@ -7,15 +7,10 @@ use ArtARTs36\EnvEditor\Exceptions\EnvNotValid;
 use ArtARTs36\EnvEditor\Field\Field;
 use ArtARTs36\Str\Str;
 
-/**
- * Class Editor
- * @package ArtARTs36\EnvEditor
- */
-final class Editor
+class Editor
 {
     /**
-     * @param string $path
-     * @return Env
+     * @param string $path - file path
      */
     public static function create(string $path): Env
     {
@@ -23,12 +18,11 @@ final class Editor
     }
 
     /**
-     * @param string $path
-     * @return Env
+     * @param string $path - file path
      */
     public static function load(string $path): Env
     {
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             throw new EnvNotFound($path);
         }
 
@@ -67,7 +61,7 @@ final class Editor
      * @param mixed $value
      * @return string
      */
-    private static function prepareValueToSave($value): string
+    protected static function prepareValueToSave($value): string
     {
         // boolean
 
@@ -110,7 +104,7 @@ final class Editor
      * @param mixed $value
      * @return bool|float|int|mixed|string
      */
-    private static function prepareValueToRead($value)
+    protected static function prepareValueToRead($value)
     {
         if (empty($value)) {
             return '';
@@ -196,7 +190,7 @@ final class Editor
         return self::saveFile($env, $file, $path);
     }
 
-    private static function getFieldsForRelevant(array $keys, Field $root, array &$fields): void
+    protected static function getFieldsForRelevant(array $keys, Field $root, array &$fields): void
     {
         $saveToken = function (Field $root) use (&$fields) {
             $fields[] = $root->token;
@@ -221,7 +215,7 @@ final class Editor
         }
     }
 
-    private static function saveFile(Env $env, string $content, ?string $path): bool
+    protected static function saveFile(Env $env, string $content, ?string $path): bool
     {
         return (bool) file_put_contents($path ?? $env->getPath(), $content);
     }
