@@ -72,6 +72,7 @@ final class EditorTest extends TestCase
         self::assertIsBool($env->get('TEST_BOOLEAN_TRUE'));
         self::assertTrue($env->get('TEST_BOOLEAN_TRUE'));
         self::assertIsInt($env->get('TEST_INTEGER_ZERO'));
+        self::assertEquals(0, $env->get('TEST_INTEGER_ZERO'));
     }
 
     /**
