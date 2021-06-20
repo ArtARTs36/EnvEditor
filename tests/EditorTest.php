@@ -34,6 +34,7 @@ final class EditorTest extends TestCase
         self::assertTrue($env->has('ACTIVE'));
         self::assertTrue($env->has('KEY'));
         self::assertTrue($env->has('BOOT'));
+        self::assertTrue($env->has('ZERO'));
         self::assertFalse($env->has('random_key'));
 
         //
@@ -42,6 +43,7 @@ final class EditorTest extends TestCase
         self::assertTrue($env->get('ACTIVE'));
         self::assertEmpty($env->get('KEY'));
         self::assertFalse($env->get('BOOT'));
+        self::assertEquals(0, $env->get('ZERO'));
 
         //
     }

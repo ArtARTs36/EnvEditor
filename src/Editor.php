@@ -75,7 +75,7 @@ class Editor
 
         //
 
-        if (empty($value)) {
+        if ($value === '') {
             return '\'\'';
         }
 
@@ -106,7 +106,7 @@ class Editor
      */
     protected static function prepareValueToRead($value)
     {
-        if (empty($value)) {
+        if ($value === '') {
             return '';
         }
 
