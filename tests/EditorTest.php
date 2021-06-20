@@ -34,6 +34,7 @@ final class EditorTest extends TestCase
         self::assertTrue($env->has('ACTIVE'));
         self::assertTrue($env->has('KEY'));
         self::assertTrue($env->has('BOOT'));
+        self::assertTrue($env->has('ZERO'));
         self::assertFalse($env->has('random_key'));
 
         //
@@ -42,6 +43,7 @@ final class EditorTest extends TestCase
         self::assertTrue($env->get('ACTIVE'));
         self::assertEmpty($env->get('KEY'));
         self::assertFalse($env->get('BOOT'));
+        self::assertEquals(0, $env->get('ZERO'));
 
         //
     }
@@ -56,6 +58,7 @@ final class EditorTest extends TestCase
         $env->set('APP_NAME', 'Test');
         $env->set('TEST_BOOLEAN_FALSE', false);
         $env->set('TEST_BOOLEAN_TRUE', true);
+        $env->set('TEST_INTEGER_ZERO', 0);
 
         Editor::save($env, static::$saveEnvPath);
 
@@ -68,6 +71,8 @@ final class EditorTest extends TestCase
         self::assertFalse($env->get('TEST_BOOLEAN_FALSE'));
         self::assertIsBool($env->get('TEST_BOOLEAN_TRUE'));
         self::assertTrue($env->get('TEST_BOOLEAN_TRUE'));
+        self::assertIsInt($env->get('TEST_INTEGER_ZERO'));
+        self::assertEquals(0, $env->get('TEST_INTEGER_ZERO'));
     }
 
     /**
