@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "artarts36/str": "^1.0"
+        "artarts36/str": "^1.0 || ^2.0"
     },
     "autoload": {
         "psr-4": {

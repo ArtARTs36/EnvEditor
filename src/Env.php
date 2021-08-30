@@ -2,7 +2,9 @@
 
 namespace ArtARTs36\EnvEditor;
 
-final class Env implements \Countable
+use ArtARTs36\Str\Facade\Str;
+
+class Env implements \Countable
 {
     private $variables;
 
@@ -63,5 +65,25 @@ final class Env implements \Countable
         Editor::save($this);
 
         return $this;
+    }
+
+    public function getVariablesByPrefix(string $prefix, bool $removePrefix = false): array
+    {
+        $variables = [];
+        $prefixLength = mb_strlen($prefix);
+
+        foreach ($this->variables as $key => $value) {
+            if (Str::startsWith($key, $prefix)) {
+                $newKey = $key;
+
+                if ($removePrefix) {
+                    $newKey = Str::cut($newKey, null, $prefixLength);
+                }
+
+                $variables[$newKey] = $value;
+            }
+        }
+
+        return $variables;
     }
 }
