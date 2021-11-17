@@ -4,32 +4,31 @@ namespace ArtARTs36\EnvEditor;
 
 class Variable
 {
-    protected $key;
+    public $key;
 
-    protected $value;
+    public $value;
 
-    protected $comment;
+    public $topComment;
 
-    public function __construct(string $key, $value, string $comment = '')
-    {
+    public $rightComment;
+
+    public function __construct(
+        string $key,
+        $value,
+        string $topComment = '',
+        string $rightComment = ''
+    ) {
         $this->key = $key;
         $this->value = $value;
-        $this->comment = $comment;
+        $this->topComment = $topComment;
+        $this->rightComment = $rightComment;
     }
 
-    public function getKey(): string
+    public static function fromArray(array $array): self
     {
-        return $this->key;
-    }
+        var_dump($array);
 
-    /**
-     * @param scalar $value
-     */
-    public function setValue($value): self
-    {
-        $this->value = $value;
-
-        return $this;
+        return new self($array['name'], $array['value'], $array['top_comment'] ?? '', $array['right_comment'] ?? '');
     }
 
     /**
@@ -38,18 +37,6 @@ class Variable
     public function getValue()
     {
         return $this->value;
-    }
-
-    public function getComment(): string
-    {
-        return $this->comment;
-    }
-
-    public function setComment(string $comment): self
-    {
-        $this->comment = $comment;
-
-        return $this;
     }
 
     public function __toString(): string

@@ -4,6 +4,8 @@ namespace ArtARTs36\EnvEditor\Tests;
 
 use ArtARTs36\EnvEditor\Editor;
 use ArtARTs36\EnvEditor\Env;
+use ArtARTs36\EnvEditor\Lex\Lexer;
+use ArtARTs36\EnvEditor\Lex\VariableHydrator;
 use PHPUnit\Framework\TestCase;
 
 final class EditorTest extends TestCase
@@ -28,6 +30,12 @@ final class EditorTest extends TestCase
 
     public function testLoad(): void
     {
+        $hydrator = new VariableHydrator(new Lexer());
+
+        $hydrator->hydrate(file_get_contents(__DIR__ . '/.env.example'));
+
+        die();
+
         $env = Editor::load(__DIR__ . '/.env.example');
 
         self::assertTrue($env->has('APP_NAME'));

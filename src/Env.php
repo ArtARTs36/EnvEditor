@@ -30,7 +30,7 @@ class Env implements \Countable
     public function set(string $key, $value): self
     {
         if (array_key_exists($key, $this->variables)) {
-            $this->variables[$key]->setValue($value);
+            $this->variables[$key]->value = $value;
         } else {
             $this->variables[$key] = new Variable($key, $value);
         }
