@@ -2,6 +2,7 @@
 
 namespace ArtARTs36\EnvEditor\Lex;
 
+use ArtARTs36\EnvEditor\Exceptions\EnvNotValid;
 use ArtARTs36\EnvEditor\Variable;
 
 class VariableHydrator
@@ -93,7 +94,11 @@ class VariableHydrator
         $state = 0;
 
         foreach ($this->lexer->lex($content) as $token) {
-            $state = $this->rules[$state][$token->token] ?? $this->rules[$state]['any'];
+            $state = $this->rules[$state][$token->token] ?? $this->rules[$state]['any'] ?? null;
+
+            if ($state === null) {
+                throw new \RuntimeException('Not valid source');
+            }
 
             $variable = $this->actions[$state]($token, $lastVariable);
 
