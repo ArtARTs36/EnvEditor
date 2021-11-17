@@ -24,6 +24,7 @@ class Lexer
             '\n'                  => Token::NEW_LINE,
             '\w+'                 => Token::VALUE,
             '\s+'                 => Token::WHITESPACE,
+            "\'(.*)\'"            => Token::VALUE,
         ]);
     }
 

@@ -5,6 +5,9 @@ namespace ArtARTs36\EnvEditor;
 use ArtARTs36\EnvEditor\Exceptions\EnvNotFound;
 use ArtARTs36\EnvEditor\Exceptions\EnvNotValid;
 use ArtARTs36\EnvEditor\Field\Field;
+use ArtARTs36\EnvEditor\Lex\Lexer;
+use ArtARTs36\EnvEditor\Lex\VariableHydrator;
+use ArtARTs36\EnvEditor\Variable\ValueTypeCaster;
 use ArtARTs36\Str\Str;
 
 class Editor
@@ -26,21 +29,11 @@ class Editor
             throw new EnvNotFound($path);
         }
 
-        $matches = [];
+        $source = file_get_contents($path) . "\n";
 
-        preg_match_all('/([^=]*)=(.*)\n*/i', file_get_contents($path), $matches);
+        $hydrator = new VariableHydrator(new Lexer(), new ValueTypeCaster());
 
-        if (count($matches) !== 3) {
-            throw new EnvNotValid($path);
-        }
-
-        $variables = [];
-
-        foreach ($matches[1] as $index => $key) {
-            $variables[$key] = new Variable($key, static::prepareValueToRead($matches[2][$index]));
-        }
-
-        return new Env($variables, $path);
+        return new Env($hydrator->hydrate($source), $path);
     }
 
     /**

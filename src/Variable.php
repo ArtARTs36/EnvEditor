@@ -26,8 +26,6 @@ class Variable
 
     public static function fromArray(array $array): self
     {
-        var_dump($array);
-
         return new self($array['name'], $array['value'], $array['top_comment'] ?? '', $array['right_comment'] ?? '');
     }
 

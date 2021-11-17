@@ -49,7 +49,9 @@ class VariableHydrator
 
     protected $actions = [];
 
-    public function __construct(Lexer $lexer)
+    protected $typeCaster;
+
+    public function __construct(Lexer $lexer, Variable\ValueTypeCaster $typeCaster)
     {
         $this->lexer = $lexer;
         $this->actions = [
@@ -60,7 +62,7 @@ class VariableHydrator
                 $variable['name'] = $token->value;
             },
             3 => function (Token $token, array &$variable) {
-                $variable['value'] = $token->value;
+                $variable['value'] = $this->typeCaster->castToRead($token->value);
             },
             4 => function (Token $token, array &$variable) {
                 $variable['right_comment'] = $token->value;
@@ -75,9 +77,14 @@ class VariableHydrator
             6 => function () {},
             7 => function () {},
         ];
+
+        $this->typeCaster = $typeCaster;
     }
 
-    public function hydrate(string $content)
+    /**
+     * @return array<Variable>
+     */
+    public function hydrate(string $content): array
     {
         $variables = [];
         $lastVariable = [];
@@ -92,5 +99,7 @@ class VariableHydrator
                 $variables[$variable->key] = $variable;
             }
         }
+
+        return $variables;
     }
 }
