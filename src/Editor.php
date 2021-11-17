@@ -110,13 +110,15 @@ class Editor
      */
     protected static function prepareValueToRead($value)
     {
-        if ($value === '') {
+        $valueString = Str::make($value);
+
+        if ($valueString->isEmpty()) {
             return '';
         }
 
         //
 
-        if (is_numeric($value)) {
+        if ($valueString->isDigit()) {
             if (($int = intval($value)) == $value) {
                 return $int;
             }
@@ -128,25 +130,21 @@ class Editor
 
         //
 
-        $str = Str::make($value);
-
-        if ($str->equals('true', true)) {
+        if ($valueString->equals('true', true)) {
             return true;
         }
 
-        if ($str->equals('false', true)) {
+        if ($valueString->equals('false', true)) {
             return false;
         }
 
         //
 
         if (($toString = (string) $value) === $value) {
-            $str = Str::make($value);
-
-            if (($str->firstSymbol() === '\'' && $str->lastSymbol() === '\'') ||
-                ($str->firstSymbol() === '"' && $str->lastSymbol() === '"')
+            if (($valueString->firstSymbol() === '\'' && $valueString->lastSymbol() === '\'') ||
+                ($valueString->firstSymbol() === '"' && $valueString->lastSymbol() === '"')
             ) {
-                return $str->cut($str->count() - 2, 1)->__toString();
+                return $valueString->cut($valueString->count() - 2, 1)->__toString();
             } else {
                 return $toString;
             }
