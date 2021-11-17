@@ -56,6 +56,7 @@ class VariableHydrator
     {
         $this->lexer = $lexer;
         $this->actions = [
+            0 => function () {},
             1 => function (Token $token, array &$variable) {
                 $variable['top_comment'] = $token->flat;
             },
