@@ -25,7 +25,7 @@ class VariableHydrator
         ],
         // Присвоение значения переменной
         3 => [
-            Token::WHITESPACE => 7,
+            Token::WHITESPACE => 4,
             Token::NEW_LINE => 5,
         ],
         // Присвоение комментария справа от значения переменной
@@ -41,9 +41,6 @@ class VariableHydrator
         // Пропуск Token::ASSIGN
         6 => [
             'any' => 3,
-        ],
-        7 => [
-            'any' => 4,
         ],
     ];
 
@@ -75,7 +72,6 @@ class VariableHydrator
                 return $var;
             },
             6 => function () {},
-            7 => function () {},
         ];
 
         $this->typeCaster = $typeCaster;
