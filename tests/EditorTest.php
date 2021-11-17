@@ -33,10 +33,12 @@ final class EditorTest extends TestCase
         $env = Editor::load(__DIR__ . '/.env.example');
 
         self::assertTrue($env->has('APP_NAME'));
+        self::assertEquals('APP_COMM', $env->get('APP_NAME')->rightComment);
         self::assertTrue($env->has('ACTIVE'));
         self::assertTrue($env->has('KEY'));
         self::assertTrue($env->has('BOOT'));
         self::assertTrue($env->has('ZERO'));
+        self::assertEquals('ZERO_COMMENT', $env->get('ZERO')->rightComment);
         self::assertFalse($env->has('random_key'));
 
         //

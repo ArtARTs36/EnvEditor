@@ -25,7 +25,7 @@ class VariableHydrator
         ],
         // Присвоение значения переменной
         3 => [
-            Token::WHITESPACE => 4,
+            Token::WHITESPACE => 7,
             Token::NEW_LINE => 5,
         ],
         // Присвоение комментария справа от значения переменной
@@ -41,6 +41,10 @@ class VariableHydrator
         // Пропуск Token::ASSIGN
         6 => [
             'any' => 3,
+        ],
+        // Пропуск Token::WHITE_SPACE
+        7 => [
+            'any' => 4,
         ],
     ];
 
@@ -62,7 +66,7 @@ class VariableHydrator
                 $variable['value'] = $this->typeCaster->castToRead($token->value);
             },
             4 => function (Token $token, array &$variable) {
-                $variable['right_comment'] = $token->value;
+                $variable['right_comment'] = $token->flat;
             },
             5 => function (Token $token, array &$variable) {
                 $var = Variable::fromArray($variable);
@@ -72,6 +76,7 @@ class VariableHydrator
                 return $var;
             },
             6 => function () {},
+            7 => function () {},
         ];
 
         $this->typeCaster = $typeCaster;

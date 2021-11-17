@@ -29,7 +29,7 @@ class Editor
             throw new EnvNotFound($path);
         }
 
-        $source = file_get_contents($path) . "\n";
+        $source = rtrim(file_get_contents($path)) . "\n";
 
         $hydrator = new VariableHydrator(new Lexer(), new ValueTypeCaster());
 

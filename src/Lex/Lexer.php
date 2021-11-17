@@ -36,9 +36,18 @@ class Lexer
         $tokens = [];
 
         foreach ($this->lexer->lex($source) as $token) {
-            $tokens[] = new Token($token[0], trim($token[2]), $token[3][1] ?? null);
+            $tokens[] = new Token($token[0], trim($token[2]), $this->cleanFlat($token));
         }
 
         return $tokens;
+    }
+
+    protected function cleanFlat(array $token): string
+    {
+        if (! array_key_exists(3, $token) || ! array_key_exists(1, $token[3])) {
+            return '';
+        }
+
+        return trim($token[3][1]);
     }
 }
