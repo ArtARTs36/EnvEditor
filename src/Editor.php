@@ -35,6 +35,11 @@ class Editor
         }
 
         $variables = array_combine($matches[1], array_map('static::prepareValueToRead', $matches[2]));
+        $variables = [];
+
+        foreach ($matches[1] as $index => $key) {
+            $variables[$key] = new Variable($key, static::prepareValueToRead($matches[2][$index]));
+        }
 
         return new Env($variables, $path);
     }
@@ -49,7 +54,7 @@ class Editor
         $file = '';
 
         foreach ($env->getVariables() as $key => $value) {
-            $value = static::prepareValueToSave($value);
+            $value = static::prepareValueToSave($value->getValue());
 
             $file .= "{$key}={$value}\n";
         }
@@ -154,7 +159,7 @@ class Editor
     /**
      * Save env variables by logical groups
      */
-    public static function relevantSave(Env $env, string $path = null): bool
+    public static function relevantSave(Env $env, ?string $path = null): bool
     {
         $keys = array_keys($env->getVariables());
 
@@ -165,7 +170,7 @@ class Editor
             $parts = explode('_', $key);
 
             foreach ($parts as $part) {
-                $field = $field->addChildren($part, next($parts) ? false : true);
+                $field = $field->addChildren($part, ! next($parts));
             }
 
             $field = $root;
