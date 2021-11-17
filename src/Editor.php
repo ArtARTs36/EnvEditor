@@ -34,7 +34,6 @@ class Editor
             throw new EnvNotValid($path);
         }
 
-        $variables = array_combine($matches[1], array_map('static::prepareValueToRead', $matches[2]));
         $variables = [];
 
         foreach ($matches[1] as $index => $key) {
