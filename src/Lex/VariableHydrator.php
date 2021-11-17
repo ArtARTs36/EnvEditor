@@ -36,7 +36,7 @@ class VariableHydrator
         5 => [
             Token::COMMENT_BEFORE_VAR => 1,
             Token::VAR_NAME => 2,
-            Token::NEW_LINE => 1,
+            Token::NEW_LINE => 0,
         ],
         // Пропуск Token::ASSIGN
         6 => [
