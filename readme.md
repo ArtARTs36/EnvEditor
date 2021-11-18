@@ -29,6 +29,3 @@ Editor::save($env);
 var_dump($env->get('APP_NAME'));
 var_dump($env->get('APP_ENV'));
 ```
-
-### TodoList:
-1. Work on comments
