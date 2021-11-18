@@ -2,7 +2,6 @@
 
 namespace ArtARTs36\EnvEditor\Lex;
 
-use ArtARTs36\EnvEditor\Exceptions\EnvNotValid;
 use ArtARTs36\EnvEditor\Variable;
 
 class VariableHydrator
