@@ -39,6 +39,19 @@ class Variable
         return get_object_vars($this);
     }
 
+    public function type(): string
+    {
+        return gettype($this->value);
+    }
+
+    public function comment(): string
+    {
+        return implode("\n", [
+            $this->topComment,
+            $this->rightComment,
+        ]);
+    }
+
     public function __toString(): string
     {
         return $this->value;
