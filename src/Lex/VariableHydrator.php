@@ -60,11 +60,12 @@ class VariableHydrator
 
     protected $typeCaster;
 
-    public function __construct(Lexer $lexer, ValueNormalizer $typeCaster)
+    public function __construct(VariableLexer $lexer, ValueNormalizer $typeCaster)
     {
         $this->lexer = $lexer;
         $this->actions = [
-            0 => function () {},
+            0 => function () {
+            },
             1 => function (Token $token, array &$variable) {
                 $variable['top_comment'] = $token->flat;
             },
@@ -84,8 +85,10 @@ class VariableHydrator
 
                 return $var;
             },
-            6 => function () {},
-            7 => function () {},
+            6 => function () {
+            },
+            7 => function () {
+            },
             8 => function (Token $token, array &$variable) {
                 $variable['value'] = '';
             }
@@ -104,7 +107,7 @@ class VariableHydrator
         $state = 0;
 
         foreach ($this->lexer->lex($content) as $token) {
-            $state = $this->rules[$state][$token->token] ?? $this->rules[$state]['any'] ?? throw new \LogicException("$state, $token->token, $token->value, ". print_r($variable, true));
+            $state = $this->rules[$state][$token->token] ?? $this->rules[$state]['any'] ?? null;
 
             if ($state === null) {
                 throw new \RuntimeException('Not valid source');
