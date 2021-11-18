@@ -46,7 +46,7 @@ class Editor
         $file = '';
 
         foreach ($env->getVariables() as $key => $value) {
-            $value = static::prepareValueToSave($value->getValue());
+            $value = static::prepareValueToSave($value->value);
 
             $file .= "{$key}={$value}\n";
         }

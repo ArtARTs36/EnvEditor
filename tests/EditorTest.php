@@ -42,12 +42,12 @@ final class EditorTest extends TestCase
 
         //
 
-        self::assertEquals('EnvEditor', $env->get('APP_NAME')->getValue());
-        self::assertTrue($env->get('ACTIVE')->getValue());
-        self::assertEmpty($env->get('KEY')->getValue());
-        self::assertFalse($env->get('BOOT')->getValue());
-        self::assertEquals(0, $env->get('ZERO')->getValue());
-        self::assertEquals(0.1, $env->get('VAR_DOUBLE')->getValue());
+        self::assertEquals('EnvEditor', $env->get('APP_NAME')->value);
+        self::assertTrue($env->get('ACTIVE')->value);
+        self::assertEmpty($env->get('KEY')->value);
+        self::assertFalse($env->get('BOOT')->value);
+        self::assertEquals(0, $env->get('ZERO')->value);
+        self::assertEquals(0.1, $env->get('VAR_DOUBLE')->value);
 
         //
     }
@@ -70,13 +70,13 @@ final class EditorTest extends TestCase
 
         $env = $this->loadSavedExample();
 
-        self::assertEquals('Test', $env->get('APP_NAME')->getValue());
-        self::assertIsBool($env->get('TEST_BOOLEAN_FALSE')->getValue());
-        self::assertFalse($env->get('TEST_BOOLEAN_FALSE')->getValue());
-        self::assertIsBool($env->get('TEST_BOOLEAN_TRUE')->getValue());
-        self::assertTrue($env->get('TEST_BOOLEAN_TRUE')->getValue());
-        self::assertIsInt($env->get('TEST_INTEGER_ZERO')->getValue());
-        self::assertEquals(0, $env->get('TEST_INTEGER_ZERO')->getValue());
+        self::assertEquals('Test', $env->get('APP_NAME')->value);
+        self::assertIsBool($env->get('TEST_BOOLEAN_FALSE')->value);
+        self::assertFalse($env->get('TEST_BOOLEAN_FALSE')->value);
+        self::assertIsBool($env->get('TEST_BOOLEAN_TRUE')->value);
+        self::assertTrue($env->get('TEST_BOOLEAN_TRUE')->value);
+        self::assertIsInt($env->get('TEST_INTEGER_ZERO')->value);
+        self::assertEquals(0, $env->get('TEST_INTEGER_ZERO')->value);
     }
 
     /**

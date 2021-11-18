@@ -29,14 +29,6 @@ class Variable
         return new self($array['name'], $array['value'], $array['top_comment'] ?? '', $array['right_comment'] ?? '');
     }
 
-    /**
-     * @return scalar
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
     public function __toString(): string
     {
         return $this->value;
