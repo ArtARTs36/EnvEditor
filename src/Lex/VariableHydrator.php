@@ -28,6 +28,8 @@ class VariableHydrator
             Token::WHITESPACE => 7,
             Token::NEW_LINE => 5,
             Token::VALUE => 3,
+            Token::ASSIGN => 8,
+            #Token::VAR_NAME => 0,
         ],
         // Присвоение комментария справа от значения переменной
         4 => [
@@ -41,11 +43,16 @@ class VariableHydrator
         ],
         // Пропуск Token::ASSIGN
         6 => [
-            'any' => 3,
+            Token::VALUE => 3,
+            Token::NEW_LINE => 5,
+            Token::VAR_NAME => 3,
         ],
         // Пропуск Token::WHITE_SPACE
         7 => [
             'any' => 4,
+        ],
+        8 => [
+            'any' => 5,
         ],
     ];
 
@@ -79,6 +86,9 @@ class VariableHydrator
             },
             6 => function () {},
             7 => function () {},
+            8 => function (Token $token, array &$variable) {
+                $variable['value'] = '';
+            }
         ];
 
         $this->typeCaster = $typeCaster;
@@ -94,7 +104,7 @@ class VariableHydrator
         $state = 0;
 
         foreach ($this->lexer->lex($content) as $token) {
-            $state = $this->rules[$state][$token->token] ?? $this->rules[$state]['any'] ?? null;
+            $state = $this->rules[$state][$token->token] ?? $this->rules[$state]['any'] ?? throw new \LogicException("$state, $token->token, $token->value, ". print_r($variable, true));
 
             if ($state === null) {
                 throw new \RuntimeException('Not valid source');

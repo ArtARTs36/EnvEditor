@@ -26,7 +26,12 @@ class Variable
 
     public static function fromArray(array $array): self
     {
-        return new self($array['name'], $array['value'], $array['top_comment'] ?? '', $array['right_comment'] ?? '');
+        return new self(
+            $array['name'],
+            array_key_exists('value', $array) ? $array['value'] : '',
+            $array['top_comment'] ?? '',
+            $array['right_comment'] ?? ''
+        );
     }
 
     public function __toString(): string

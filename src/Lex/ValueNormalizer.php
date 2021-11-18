@@ -17,6 +17,10 @@ class ValueNormalizer
             return '';
         }
 
+        if ($valueString->equals('null')) {
+            return null;
+        }
+
         //
 
         if ($valueString->isDigit()) {
@@ -60,6 +64,10 @@ class ValueNormalizer
      */
     public function toSave($value): string
     {
+        if ($value === null) {
+            return 'null';
+        }
+
         // boolean
 
         if ($value === true) {

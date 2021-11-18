@@ -25,7 +25,8 @@ class Lexer
             '\w+'                                        => Token::VALUE,
             '\s+'                                        => Token::WHITESPACE,
             "\'(.*)\'"                                   => Token::VALUE,
-            '[a-zA-Z_\x7f-\xff0-9.][a-zA-Z0-9_\x7f-\xff.]*' => Token::VALUE,
+            '[a-zA-Z_\x7f-\xff0-9.:\/\-][a-zA-Z0-9_\x7f-\xff.:\/\-]*' => Token::VALUE,
+            '"(.*)"'                                     => Token::VALUE,
         ]);
     }
 

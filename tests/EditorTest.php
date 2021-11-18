@@ -39,6 +39,7 @@ final class EditorTest extends TestCase
         self::assertEquals('ZERO_COMMENT', $env->get('ZERO')->rightComment);
         self::assertFalse($env->has('random_key'));
         self::assertTrue($env->has('VAR_DOUBLE'));
+        self::assertTrue($env->has('VAR_NULL'));
 
         //
 
@@ -48,6 +49,7 @@ final class EditorTest extends TestCase
         self::assertFalse($env->get('BOOT')->value);
         self::assertEquals(0, $env->get('ZERO')->value);
         self::assertEquals(0.1, $env->get('VAR_DOUBLE')->value);
+        self::assertNull($env->get('VAR_NULL')->value);
 
         //
     }
