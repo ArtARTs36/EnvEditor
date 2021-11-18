@@ -7,7 +7,7 @@ use ArtARTs36\EnvEditor\Exceptions\EnvNotValid;
 use ArtARTs36\EnvEditor\Field\Field;
 use ArtARTs36\EnvEditor\Lex\Lexer;
 use ArtARTs36\EnvEditor\Lex\VariableHydrator;
-use ArtARTs36\EnvEditor\Variable\ValueNormalizer;
+use ArtARTs36\EnvEditor\Lex\ValueNormalizer;
 
 class Editor
 {

@@ -53,7 +53,7 @@ class VariableHydrator
 
     protected $typeCaster;
 
-    public function __construct(Lexer $lexer, Variable\ValueNormalizer $typeCaster)
+    public function __construct(Lexer $lexer, ValueNormalizer $typeCaster)
     {
         $this->lexer = $lexer;
         $this->actions = [

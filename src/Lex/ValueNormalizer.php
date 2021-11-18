@@ -1,6 +1,6 @@
 <?php
 
-namespace ArtARTs36\EnvEditor\Variable;
+namespace ArtARTs36\EnvEditor\Lex;
 
 use ArtARTs36\Str\Str;
 
