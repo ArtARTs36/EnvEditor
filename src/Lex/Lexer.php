@@ -5,16 +5,12 @@ namespace ArtARTs36\EnvEditor\Lex;
 use Phlexy\LexerDataGenerator;
 use Phlexy\LexerFactory\Stateless\UsingPregReplace;
 
-class Lexer
+class Lexer implements VariableLexer
 {
     protected $lexer;
 
-    public function __construct()
+    public function __construct(UsingPregReplace $factory)
     {
-        $factory = new UsingPregReplace(
-            new LexerDataGenerator()
-        );
-
         $this->lexer = $factory->createLexer([
             '([A-Z]|_)+'                                 => Token::VAR_NAME,
             '\='                                         => Token::ASSIGN,
@@ -28,6 +24,11 @@ class Lexer
             '[a-zA-Z_\x7f-\xff0-9.:\/\-][a-zA-Z0-9_\x7f-\xff.:\/\-]*' => Token::VALUE,
             '"(.*)"'                                     => Token::VALUE,
         ]);
+    }
+
+    public static function make(): self
+    {
+        return new self(new UsingPregReplace(new LexerDataGenerator()));
     }
 
     /**

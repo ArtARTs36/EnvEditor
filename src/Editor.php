@@ -31,7 +31,7 @@ class Editor
         $source = rtrim(file_get_contents($path)) . "\n";
 
         try {
-            $variables = (new VariableHydrator(new Lexer(), new ValueNormalizer()))->hydrate($source);
+            $variables = (new VariableHydrator(Lexer::make(), new ValueNormalizer()))->hydrate($source);
         } catch (\RuntimeException $exception) {
             throw new EnvNotValid($path, 0, $exception);
         }
