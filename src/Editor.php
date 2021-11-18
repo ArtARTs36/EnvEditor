@@ -57,7 +57,7 @@ class Editor
                 $file .= '#' . $variable->topComment . "\n";
             }
 
-            $file .= "{$variable->key}={$value}\n";
+            $file .= "{$variable->name}={$value}\n";
         }
 
         return self::saveFile($env, $file, $path);

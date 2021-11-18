@@ -113,7 +113,7 @@ class VariableHydrator
             $variable = $this->actions[$state]($token, $lastVariable);
 
             if ($variable instanceof Variable) {
-                $variables[$variable->key] = $variable;
+                $variables[$variable->name] = $variable;
             }
         }
 

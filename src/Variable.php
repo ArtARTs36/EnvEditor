@@ -4,7 +4,7 @@ namespace ArtARTs36\EnvEditor;
 
 class Variable
 {
-    public $key;
+    public $name;
 
     public $value;
 
@@ -18,7 +18,7 @@ class Variable
         string $topComment = '',
         string $rightComment = ''
     ) {
-        $this->key = $key;
+        $this->name = $key;
         $this->value = $value;
         $this->topComment = $topComment;
         $this->rightComment = $rightComment;
@@ -32,6 +32,11 @@ class Variable
             $array['top_comment'] ?? '',
             $array['right_comment'] ?? ''
         );
+    }
+
+    public function toArray(): array
+    {
+        return get_object_vars($this);
     }
 
     public function __toString(): string

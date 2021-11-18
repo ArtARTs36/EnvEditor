@@ -90,4 +90,15 @@ class Env implements \Countable
 
         return $variables;
     }
+
+    public function toArray(): array
+    {
+        $array = [];
+
+        foreach ($this->variables as $variable) {
+            $array[$variable->name] = $variable->toArray();
+        }
+
+        return $array;
+    }
 }
