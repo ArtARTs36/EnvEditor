@@ -4,9 +4,12 @@ namespace ArtARTs36\EnvEditor\Variable;
 
 use ArtARTs36\Str\Str;
 
-class ValueTypeCaster
+class ValueNormalizer
 {
-    public function castToRead($value)
+    /**
+     * @return scalar
+     */
+    public function toRead($value)
     {
         $valueString = Str::make($value);
 
@@ -45,6 +48,49 @@ class ValueTypeCaster
                 return $valueString->cut($valueString->count() - 2, 1)->__toString();
             } else {
                 return $toString;
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param scalar $value
+     * @return string
+     */
+    public function toSave($value): string
+    {
+        // boolean
+
+        if ($value === true) {
+            return 'true';
+        }
+
+        if ($value === false) {
+            return 'false';
+        }
+
+        //
+
+        if ($value === '') {
+            return '\'\'';
+        }
+
+        if (is_numeric($value)) {
+            return (string) $value;
+        }
+
+        //
+
+        $str = Str::make($value);
+
+        if (($toString = (string) $value) === $value) {
+            if (($str->firstSymbol() === '\'' && $str->lastSymbol() === '\'') ||
+                ($str->firstSymbol() === '"' && $str->lastSymbol() === '"')
+            ) {
+                return $toString;
+            } else {
+                return "'{$toString}'";
             }
         }
 
