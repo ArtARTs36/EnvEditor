@@ -4,8 +4,6 @@ namespace ArtARTs36\EnvEditor\Tests;
 
 use ArtARTs36\EnvEditor\Editor;
 use ArtARTs36\EnvEditor\Env;
-use ArtARTs36\EnvEditor\Lex\Lexer;
-use ArtARTs36\EnvEditor\Lex\VariableHydrator;
 use PHPUnit\Framework\TestCase;
 
 final class EditorTest extends TestCase
@@ -40,6 +38,7 @@ final class EditorTest extends TestCase
         self::assertTrue($env->has('ZERO'));
         self::assertEquals('ZERO_COMMENT', $env->get('ZERO')->rightComment);
         self::assertFalse($env->has('random_key'));
+        self::assertTrue($env->has('VAR_DOUBLE'));
 
         //
 
@@ -48,6 +47,7 @@ final class EditorTest extends TestCase
         self::assertEmpty($env->get('KEY')->getValue());
         self::assertFalse($env->get('BOOT')->getValue());
         self::assertEquals(0, $env->get('ZERO')->getValue());
+        self::assertEquals(0.1, $env->get('VAR_DOUBLE')->getValue());
 
         //
     }
