@@ -16,36 +16,77 @@ final class EditorTest extends TestCase
     {
         parent::setUp();
 
-        !file_exists(static::$saveEnvPath) || unlink(static::$saveEnvPath);
+        ! file_exists(self::$saveEnvPath) || unlink(self::$saveEnvPath);
     }
 
     public function tearDown(): void
     {
         parent::tearDown();
 
-        !file_exists(static::$saveEnvPath) || unlink(static::$saveEnvPath);
+        ! file_exists(self::$saveEnvPath) || unlink(self::$saveEnvPath);
     }
 
-    public function testLoad(): void
+    public function providerForTestLoad(): array
     {
-        $env = Editor::load(__DIR__ . '/.env.example');
+        return [
+            [
+                self::$readEnvPath,
+                [
+                    'APP_NAME' => [
+                        'name' => 'APP_NAME',
+                        'value' => 'EnvEditor',
+                        'topComment' => '',
+                        'rightComment' => 'APP_COMM',
+                    ],
+                    'ACTIVE' => [
+                        'name' => 'ACTIVE',
+                        'value' => true,
+                        'topComment' => '',
+                        'rightComment' => '',
+                    ],
+                    'KEY' => [
+                        'name' => 'KEY',
+                        'value' => '',
+                        'topComment' => '',
+                        'rightComment' => '',
+                    ],
+                    'BOOT' => [
+                        'name' => 'BOOT',
+                        'value' => false,
+                        'topComment' => '',
+                        'rightComment' => '',
+                    ],
+                    'ZERO' => [
+                        'name' => 'ZERO',
+                        'value' => 0,
+                        'topComment' => '',
+                        'rightComment' => 'ZERO_COMMENT',
+                    ],
+                    'VAR_DOUBLE' => [
+                        'name' => 'VAR_DOUBLE',
+                        'value' => 0.1,
+                        'topComment' => '',
+                        'rightComment' => '',
+                    ],
+                    'VAR_NULL' => [
+                        'name' => 'VAR_NULL',
+                        'value' => null,
+                        'topComment' => '',
+                        'rightComment' => '',
+                    ],
+                ],
+            ]
+        ];
+    }
 
-        self::assertTrue($env->has('APP_NAME'));
-        self::assertTrue($env->has('ACTIVE'));
-        self::assertTrue($env->has('KEY'));
-        self::assertTrue($env->has('BOOT'));
-        self::assertTrue($env->has('ZERO'));
-        self::assertFalse($env->has('random_key'));
+    /**
+     * @dataProvider providerForTestLoad
+     */
+    public function testLoad(string $path, array $expected): void
+    {
+        $env = Editor::load($path);
 
-        //
-
-        self::assertEquals('EnvEditor', $env->get('APP_NAME'));
-        self::assertTrue($env->get('ACTIVE'));
-        self::assertEmpty($env->get('KEY'));
-        self::assertFalse($env->get('BOOT'));
-        self::assertEquals(0, $env->get('ZERO'));
-
-        //
+        self::assertEquals($expected, $env->toArray());
     }
 
     /**
@@ -66,13 +107,13 @@ final class EditorTest extends TestCase
 
         $env = $this->loadSavedExample();
 
-        self::assertEquals('Test', $env->get('APP_NAME'));
-        self::assertIsBool($env->get('TEST_BOOLEAN_FALSE'));
-        self::assertFalse($env->get('TEST_BOOLEAN_FALSE'));
-        self::assertIsBool($env->get('TEST_BOOLEAN_TRUE'));
-        self::assertTrue($env->get('TEST_BOOLEAN_TRUE'));
-        self::assertIsInt($env->get('TEST_INTEGER_ZERO'));
-        self::assertEquals(0, $env->get('TEST_INTEGER_ZERO'));
+        self::assertEquals('Test', $env->get('APP_NAME')->value);
+        self::assertIsBool($env->get('TEST_BOOLEAN_FALSE')->value);
+        self::assertFalse($env->get('TEST_BOOLEAN_FALSE')->value);
+        self::assertIsBool($env->get('TEST_BOOLEAN_TRUE')->value);
+        self::assertTrue($env->get('TEST_BOOLEAN_TRUE')->value);
+        self::assertIsInt($env->get('TEST_INTEGER_ZERO')->value);
+        self::assertEquals(0, $env->get('TEST_INTEGER_ZERO')->value);
     }
 
     /**

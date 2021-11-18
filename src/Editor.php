@@ -5,7 +5,9 @@ namespace ArtARTs36\EnvEditor;
 use ArtARTs36\EnvEditor\Exceptions\EnvNotFound;
 use ArtARTs36\EnvEditor\Exceptions\EnvNotValid;
 use ArtARTs36\EnvEditor\Field\Field;
-use ArtARTs36\Str\Str;
+use ArtARTs36\EnvEditor\Lex\Lexer;
+use ArtARTs36\EnvEditor\Lex\VariableHydrator;
+use ArtARTs36\EnvEditor\Lex\ValueNormalizer;
 
 class Editor
 {
@@ -26,15 +28,13 @@ class Editor
             throw new EnvNotFound($path);
         }
 
-        $matches = [];
+        $source = rtrim(file_get_contents($path)) . "\n";
 
-        preg_match_all('/([^=]*)=(.*)\n*/i', file_get_contents($path), $matches);
-
-        if (count($matches) !== 3) {
-            throw new EnvNotValid($path);
+        try {
+            $variables = (new VariableHydrator(Lexer::make(), new ValueNormalizer()))->hydrate($source);
+        } catch (\RuntimeException $exception) {
+            throw new EnvNotValid($path, 0, $exception);
         }
-
-        $variables = array_combine($matches[1], array_map('static::prepareValueToRead', $matches[2]));
 
         return new Env($variables, $path);
     }
@@ -48,113 +48,25 @@ class Editor
     {
         $file = '';
 
-        foreach ($env->getVariables() as $key => $value) {
-            $value = static::prepareValueToSave($value);
+        $normalizer = new ValueNormalizer();
 
-            $file .= "{$key}={$value}\n";
+        foreach ($env->getVariables() as $variable) {
+            $value = $normalizer->toSave($variable->value);
+
+            if ($variable->topComment) {
+                $file .= '#' . $variable->topComment . "\n";
+            }
+
+            $file .= "{$variable->name}={$value}\n";
         }
 
         return self::saveFile($env, $file, $path);
     }
 
     /**
-     * @param mixed $value
-     * @return string
-     */
-    protected static function prepareValueToSave($value): string
-    {
-        // boolean
-
-        if ($value === true) {
-            return 'true';
-        }
-
-        if ($value === false) {
-            return 'false';
-        }
-
-        //
-
-        if ($value === '') {
-            return '\'\'';
-        }
-
-        if (is_numeric($value)) {
-            return (string) $value;
-        }
-
-        //
-
-        $str = Str::make($value);
-
-        if (($toString = (string) $value) === $value) {
-            if (($str->firstSymbol() === '\'' && $str->lastSymbol() === '\'') ||
-               ($str->firstSymbol() === '"' && $str->lastSymbol() === '"')
-            ) {
-                return $toString;
-            } else {
-                return "'{$toString}'";
-            }
-        }
-
-        return $value;
-    }
-
-    /**
-     * @param mixed $value
-     * @return bool|float|int|mixed|string
-     */
-    protected static function prepareValueToRead($value)
-    {
-        if ($value === '') {
-            return '';
-        }
-
-        //
-
-        if (is_numeric($value)) {
-            if (($int = intval($value)) == $value) {
-                return $int;
-            }
-
-            if (($float = floatval($value)) == $value) {
-                return $float;
-            }
-        }
-
-        //
-
-        $str = Str::make($value);
-
-        if ($str->equals('true', true)) {
-            return true;
-        }
-
-        if ($str->equals('false', true)) {
-            return false;
-        }
-
-        //
-
-        if (($toString = (string) $value) === $value) {
-            $str = Str::make($value);
-
-            if (($str->firstSymbol() === '\'' && $str->lastSymbol() === '\'') ||
-                ($str->firstSymbol() === '"' && $str->lastSymbol() === '"')
-            ) {
-                return $str->cut($str->count() - 2, 1)->__toString();
-            } else {
-                return $toString;
-            }
-        }
-
-        return $value;
-    }
-
-    /**
      * Save env variables by logical groups
      */
-    public static function relevantSave(Env $env, string $path = null): bool
+    public static function relevantSave(Env $env, ?string $path = null): bool
     {
         $keys = array_keys($env->getVariables());
 
@@ -165,7 +77,7 @@ class Editor
             $parts = explode('_', $key);
 
             foreach ($parts as $part) {
-                $field = $field->addChildren($part, next($parts) ? false : true);
+                $field = $field->addChildren($part, ! next($parts));
             }
 
             $field = $root;

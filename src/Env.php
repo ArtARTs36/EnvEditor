@@ -11,7 +11,7 @@ class Env implements \Countable
     private $path;
 
     /**
-     * @param array<string, mixed> $variables
+     * @param array<string, Variable> $variables
      */
     public function __construct(array $variables, string $path)
     {
@@ -29,13 +29,17 @@ class Env implements \Countable
      */
     public function set(string $key, $value): self
     {
-        $this->variables[$key] = $value;
+        if (array_key_exists($key, $this->variables)) {
+            $this->variables[$key]->value = $value;
+        } else {
+            $this->variables[$key] = new Variable($key, $value);
+        }
 
         return $this;
     }
 
     /**
-     * @return mixed|null
+     * @return Variable|null
      */
     public function get(string $key)
     {
@@ -48,7 +52,7 @@ class Env implements \Countable
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<string, Variable>
      */
     public function getVariables(): array
     {
@@ -85,5 +89,16 @@ class Env implements \Countable
         }
 
         return $variables;
+    }
+
+    public function toArray(): array
+    {
+        $array = [];
+
+        foreach ($this->variables as $variable) {
+            $array[$variable->name] = $variable->toArray();
+        }
+
+        return $array;
     }
 }
