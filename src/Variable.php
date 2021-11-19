@@ -46,10 +46,17 @@ class Variable
 
     public function comment(): string
     {
-        return implode("\n", [
-            $this->topComment,
-            $this->rightComment,
-        ]);
+        return implode("\n", array_filter([
+            $this->topComment === '' ? null : $this->topComment,
+            $this->rightComment === '' ? null : $this->rightComment,
+        ]));
+    }
+
+    public function commentOrNull(): ?string
+    {
+        $comment = $this->comment();
+
+        return $comment === '' ? null : $comment;
     }
 
     public function __toString(): string
