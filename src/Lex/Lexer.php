@@ -12,7 +12,7 @@ class Lexer implements VariableLexer
     public function __construct(UsingPregReplace $factory)
     {
         $this->lexer = $factory->createLexer([
-            '([A-Z]|_)+'                                 => Token::VAR_NAME,
+            '([A-Z]|_|[0-9])+'                           => Token::VAR_NAME,
             '\='                                         => Token::ASSIGN,
             '(true|false)'                               => Token::VALUE,
             '\#(.*)\n'                                   => Token::COMMENT_BEFORE_VAR,
