@@ -74,6 +74,12 @@ final class EditorTest extends TestCase
                         'topComment' => '',
                         'rightComment' => '',
                     ],
+                    'DB_PASSWORD' => [
+                        'name' => 'DB_PASSWORD',
+                        'value' => '${EXTERNAL_DB_PASSWORD}',
+                        'topComment' => '',
+                        'rightComment' => '',
+                    ],
                 ],
             ]
         ];
