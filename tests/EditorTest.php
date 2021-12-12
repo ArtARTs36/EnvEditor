@@ -86,6 +86,12 @@ final class EditorTest extends TestCase
                         'topComment' => '',
                         'rightComment' => '',
                     ],
+                    'APP_EMAIL' => [
+                        'name' => 'APP_EMAIL',
+                        'value' => 'support@mail.ru',
+                        'topComment' => '',
+                        'rightComment' => '',
+                    ],
                 ],
             ]
         ];
