@@ -15,7 +15,7 @@ class Lexer implements VariableLexer
             '([A-Z]|_)+'                                 => Token::VAR_NAME,
             '\='                                         => Token::ASSIGN,
             '(true|false)'                               => Token::VALUE,
-            '^\#(.*)\n'                                  => Token::COMMENT_BEFORE_VAR,
+            '\#(.*)\n'                                   => Token::COMMENT_BEFORE_VAR,
             '\#(.*)'                                     => Token::COMMENT_INLINE_VAR,
             // email
             '[\w\-\.]+\@([\w-]+\.)+[\w-]{2,4}'           => Token::VALUE,

@@ -92,6 +92,12 @@ final class EditorTest extends TestCase
                         'topComment' => '',
                         'rightComment' => '',
                     ],
+                    'QUEUE_NAME' => [
+                        'name' => 'QUEUE_NAME',
+                        'value' => 'redis',
+                        'topComment' => 'use redis for queue',
+                        'rightComment' => '',
+                    ],
                 ],
             ]
         ];
