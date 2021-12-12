@@ -80,6 +80,12 @@ final class EditorTest extends TestCase
                         'topComment' => '',
                         'rightComment' => '',
                     ],
+                    'APP_KEY' => [
+                        'name' => 'APP_KEY',
+                        'value' => 'base64:4KYcssA/VnZfDDjufY6J2pnJWw+HEsHiVKGE6IGYGsk=',
+                        'topComment' => '',
+                        'rightComment' => '',
+                    ],
                 ],
             ]
         ];

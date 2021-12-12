@@ -15,6 +15,7 @@ class Lexer implements VariableLexer
             '([A-Z]|_)+'                                 => Token::VAR_NAME,
             '\='                                         => Token::ASSIGN,
             '(true|false)'                               => Token::VALUE,
+            'base64:(([A-Za-z0-9+\/]{4})*([A-Za-z0-9+\/]{3}\=|[A-Za-z0-9+\/]{2}\=\=)?){1}' => Token::VALUE,
             '^\#(.*)\n'                                  => Token::COMMENT_BEFORE_VAR,
             '\#(.*)'                                     => Token::COMMENT_INLINE_VAR,
             '\n'                                         => Token::NEW_LINE,
