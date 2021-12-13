@@ -104,6 +104,12 @@ final class EditorTest extends TestCase
                         'topComment' => '',
                         'rightComment' => '',
                     ],
+                    'COMMENT_WITH_TWO_TOP_COMMENTS' => [
+                        'name' => 'COMMENT_WITH_TWO_TOP_COMMENTS',
+                        'value' => 123,
+                        'topComment' => "one comment. two comment",
+                        'rightComment' => '',
+                    ],
                 ],
             ]
         ];

@@ -18,6 +18,8 @@ class VariableHydrator
         // Присвоение комментария перед переменной
         1 => [
             Token::VAR_NAME => 2,
+            Token::COMMENT_BEFORE_VAR => 1, // Двойные комментарии
+            Token::NEW_LINE => 0,
         ],
         // Присвоение имени переменной
         2 => [
@@ -67,7 +69,14 @@ class VariableHydrator
             0 => function () {
             },
             1 => function (Token $token, array &$variable) {
-                $variable['top_comment'] = $token->flat;
+                if (! array_key_exists('top_comment', $variable)) {
+                    $variable['top_comment'] = $token->flat;
+                } else {
+                    $variable['top_comment'] = implode(". ", [
+                        $variable['top_comment'],
+                        $token->flat,
+                    ]);
+                }
             },
             2 => function (Token $token, array &$variable) {
                 $variable['name'] = $token->value;
